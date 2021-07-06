@@ -2,16 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions, View, Text, Alert } from "react-native";
 import Constants from 'expo-constants'
 import { WebView } from 'react-native-webview'
-import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents } from 'react-native-webview-leaflet';
+import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from 'react-native-webview-leaflet';
 import * as Location from "expo-location";
 import { mapBoxToken } from '../utils/index'
 
-type LatLngObject = { lat: number; lng: number };
-
-
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
-  const [marketPosition, setMarketPosition] = useState();
+  const [markerPosition, setMarkerPosition] = useState<LatLngObject>({lat: 0, lng: 0});
 
   // Receives information about the map in the form of object
   const onMessageReceived = (message: WebviewLeafletMessage) => {
@@ -25,7 +22,8 @@ export default function MapComponent() {
       case WebViewLeafletEvents.ON_MAP_TOUCHED:
         const position: LatLngObject = message.payload!
           .touchLatLng as LatLngObject;
-        Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
+        // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
+        setMarkerPosition({lat: position.lat, lng: position.lng })
         break;
       default:
         console.log("App received", message);
@@ -56,16 +54,24 @@ export default function MapComponent() {
     zoom={10}
     ownPositionMarker={{
       id: '1',
-      coords: {lat: 36.00, lng: -76.00},
+      position: markerPosition,
       icon: "❤️",
       size: [24, 24],
       animation: {
-        name: 'BOUNCE',
+        type: AnimationType,
         duration: .5,
         delay: 0,
-        interationCount: .6
       }
     }}
+    mapShapes={[
+      {
+        shapeType: MapShapeType.CIRCLE,
+        color: "#123123",
+        id: "1",
+        center: { lat: 35.6762, lng: 139.6503 },
+        radius: 2000
+      }
+    ]}
     onError={() => {return <Text>An error occured when loading the map.😵</Text>}}
   />
   );

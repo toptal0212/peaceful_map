@@ -8,3 +8,8 @@ type BottomParamList = {
     Map: undefined;
     SavedItinerary: undefined;
 }
+
+
+/**** MapComponent Param List ****/
+
+type LatLngObject = { lat: number; lng: number };
