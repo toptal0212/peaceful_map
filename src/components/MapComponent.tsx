@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions, View, Text, Alert } from "react-native";
 import Constants from 'expo-constants'
+import { WebView } from 'react-native-webview'
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents } from 'react-native-webview-leaflet';
 import * as Location from "expo-location";
 import { mapBoxToken } from '../utils/index'
@@ -17,7 +18,7 @@ export default function MapComponent() {
     switch (message.event) {
       case WebViewLeafletEvents.ON_MAP_MARKER_CLICKED:
         Alert.alert(
-          `Map Marker Touched, ID: ${message.payload.mapMarkerID || "unknown"}`
+          `Map Marker Touched, ID: ${message.payload?.mapMarkerID || "unknown"}`
         );
 
         break;
