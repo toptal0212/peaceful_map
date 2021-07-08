@@ -1,8 +1,8 @@
-import { markerLocation } from "./markerLocation";
+import { markerLocationReducer } from "./markerLocation";
 
 export default function rootReducers() {
     return ({
-        markerLocation
+        markerLocationState: markerLocationReducer
     }
     )
 }
