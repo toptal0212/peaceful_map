@@ -5,11 +5,12 @@ import { WebView } from 'react-native-webview'
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from 'react-native-webview-leaflet';
 import * as Location from "expo-location";
 import {useSelector, useDispatch } from "react-redux";
+import { setMarkerPosition } from "../redux/actions/actionsList";
 
 
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
-  const markerPosition = useSelector<RootState, LatLngObject>(state => state.setMarkerPosition);
+  const markerPosition = useSelector<RootState, MarkerPositionState>(state => state.setMarkerPosition);
   const dispatch = useDispatch();
   console.log(markerPosition)
 
@@ -26,7 +27,8 @@ export default function MapComponent() {
         const position: LatLngObject = message.payload!
           .touchLatLng as LatLngObject;
         // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
-        dispatch({lat: position.lat, lng: position.lng });
+        dispatch(setMarkerPosition({lat: position.lat, lng: position.lng }));
+        console.log(markerPosition)
         break;
       default:
         console.log("App received", message);

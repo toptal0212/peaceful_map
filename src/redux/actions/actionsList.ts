@@ -1,4 +1,4 @@
-export const setMarkerPosition = (position: LatLngObject) => {
+export const setMarkerPosition = (position: MarkerPositionState) => {
     return {
         type: "SETMARKERPOSITION", 
         payload: position
