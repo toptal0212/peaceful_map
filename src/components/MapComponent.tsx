@@ -4,13 +4,16 @@ import Constants from 'expo-constants'
 import { WebView } from 'react-native-webview'
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from 'react-native-webview-leaflet';
 import * as Location from "expo-location";
-import { mapBoxToken } from '../utils/index'
+import {useSelector, useDispatch } from "react-redux";
+
 
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
-  const [markerPosition, setMarkerPosition] = useState<LatLngObject>({lat: 0, lng: 0});
+  const markerPosition = useSelector<RootState, LatLngObject>(state => state.setMarkerPosition);
+  const dispatch = useDispatch();
+  console.log(markerPosition)
 
-  // Receives information about the map in the form of object
+  // Receives information about the map in the form of object.
   const onMessageReceived = (message: WebviewLeafletMessage) => {
     switch (message.event) {
       case WebViewLeafletEvents.ON_MAP_MARKER_CLICKED:
@@ -23,7 +26,7 @@ export default function MapComponent() {
         const position: LatLngObject = message.payload!
           .touchLatLng as LatLngObject;
         // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
-        setMarkerPosition({lat: position.lat, lng: position.lng })
+        dispatch({lat: position.lat, lng: position.lng });
         break;
       default:
         console.log("App received", message);

@@ -16,3 +16,7 @@ type LatLngObject = { lat: number; lng: number };
 
 /**** Redux Store ****/
 
+type RootState = {
+    setMarkerPosition: LatLngObject,
+}
+type MarkerPositionAction = { type: string; payload: LatLngObject}

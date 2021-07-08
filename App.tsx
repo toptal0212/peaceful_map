@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import Navigation from "./src/navigation/RootNav";
 import { Provider } from "react-redux";
-import store from "./src/redux/store";
+import { store } from "./src/redux/store";
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
   );
 }
 
+// Accesses redux at the root.
 export default function AppWrapper() {
   return (
     <Provider store={store}>
