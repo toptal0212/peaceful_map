@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Dimensions, View, Text, Alert } from "react-native";
+import { StyleSheet, Dimensions, View, Text, Alert, SafeAreaView } from "react-native";
 import Constants from 'expo-constants'
 import { WebView } from 'react-native-webview'
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from 'react-native-webview-leaflet';
@@ -31,6 +31,7 @@ export default function MapComponent() {
   };
 
   return (
+    <SafeAreaView style={styles.container}>
     <WebViewLeaflet
     ref={(ref: WebViewLeaflet) => {
       webViewLeafletRef.current = ref;
@@ -55,7 +56,7 @@ export default function MapComponent() {
     ownPositionMarker={{
       id: '1',
       position: markerPosition,
-      icon: "❤️",
+      icon: "📍",
       size: [24, 24],
       animation: {
         type: AnimationType,
@@ -68,12 +69,13 @@ export default function MapComponent() {
         shapeType: MapShapeType.CIRCLE,
         color: "#123123",
         id: "1",
-        center: { lat: 35.6762, lng: 139.6503 },
+        center: markerPosition,
         radius: 2000
       }
     ]}
     onError={() => {return <Text>An error occured when loading the map.😵</Text>}}
   />
+  </SafeAreaView>
   );
 };
 

@@ -13,3 +13,6 @@ type BottomParamList = {
 /**** MapComponent Param List ****/
 
 type LatLngObject = { lat: number; lng: number };
+
+/**** Redux Store ****/
+

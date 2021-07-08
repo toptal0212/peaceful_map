@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './BottomTab';
 import { NavigationContainer } from '@react-navigation/native'
@@ -18,8 +18,8 @@ export default function Navigation() {
 
 function RootNavigator() {
     return (
-        <RootStack.Navigator>
-            <RootStack.Screen  name="Root" component={BottomTabNavigator}/>
+        <RootStack.Navigator mode="modal">
+            <RootStack.Screen  name="Root" component={BottomTabNavigator} options={{headerShown: false}}/>
         </RootStack.Navigator>
 
     )
