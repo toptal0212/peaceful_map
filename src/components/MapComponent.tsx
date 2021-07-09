@@ -10,9 +10,11 @@ import { setMarkerPosition } from "../redux/actions/actionsList"
 
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
-  const marker = useSelector<RootState, MarkerLocationState>(state => state.markerLocationState);
+  const markerLocationState = useSelector<RootState, MarkerLocationState>(
+    (state) => state.markerLocationState
+  );
   const dispatch = useDispatch();
-  console.log(marker.markerLocation)
+  console.log(markerLocationState)
 
   // Receives information about the map in the form of object.
   const onMessageReceived = (message: WebviewLeafletMessage) => {
@@ -28,7 +30,7 @@ export default function MapComponent() {
           .touchLatLng as LatLngObject;
         // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
         dispatch(setMarkerPosition({lat: position.lat, lng: position.lng }));
-        console.log(marker.markerLocation)
+        console.log(markerLocationState)
         break;
       default:
         console.log("App received", message);
@@ -60,22 +62,22 @@ export default function MapComponent() {
     zoom={10}
     ownPositionMarker={{
       id: '1',
-      position: marker.markerLocation,
+      position: markerLocationState.markerLocation,
       icon: "📍",
       size: [24, 24],
       animation: {
-        type: AnimationType.BOUNCE,
+        type: AnimationType.FADE,
         duration: .5,
         delay: 0,
       }
     }}
-    
+
     mapShapes={[
       {
         shapeType: MapShapeType.CIRCLE,
         color: "#123123",
         id: "1",
-        center: marker.markerLocation,
+        center: markerLocationState.markerLocation,
         radius: 2000
       }
     ]}

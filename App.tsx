@@ -21,7 +21,7 @@ export default function AppWrapper() {
     <Provider store={store}>
       <App />
     </Provider>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

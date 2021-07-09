@@ -4,7 +4,7 @@ type RootStackParamList = {
     Root: undefined;
 }
 
-type BottomParamList = { 
+type BottomParamList = {
     Map: undefined;
     SavedItinerary: undefined;
 }
@@ -12,7 +12,7 @@ type BottomParamList = {
 
 /**** MapComponent Param List ****/
 
-type LatLngObject = { lat: number; lng: number };
+type LatLngObject = { lat: number | undefined; lng: number | undefined };
 
 /**** Redux Store ****/
 
@@ -20,8 +20,11 @@ interface RootState {
     markerLocationState: MarkerLocationState,
 }
 
-interface MarkerLocationState { 
-    markerLocation: LatLngObject;
+interface MarkerLocationState {
+    markerLocation: LatLngObject,
 }
 
-type MarkerLocationAction = { type: string; payload: LatLngObject}
+type MarkerLocationAction = { 
+    type: string,
+    payload: LatLngObject 
+}

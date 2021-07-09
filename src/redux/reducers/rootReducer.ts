@@ -1,8 +1,6 @@
+import { combineReducers } from "@reduxjs/toolkit";
 import { markerLocationReducer } from "./markerLocation";
 
-export default function rootReducers() {
-    return ({
-        markerLocationState: markerLocationReducer
-    }
-    )
-}
+export const rootReducers = combineReducers({
+    markerLocationState: markerLocationReducer
+})
