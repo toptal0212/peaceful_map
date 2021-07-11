@@ -1,12 +1,13 @@
 /**** Stack Navigators Param List ****/
 
 type RootStackParamList = {
-    Root: undefined;
+    Root: undefined,
+    Direction: undefined,
 }
 
 type BottomParamList = {
-    Map: undefined;
-    SavedItinerary: undefined;
+    Map: undefined,
+    SavedItinerary: undefined,
 }
 
 

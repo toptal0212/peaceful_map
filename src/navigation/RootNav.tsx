@@ -19,7 +19,15 @@ export default function Navigation() {
 function RootNavigator() {
     return (
         <RootStack.Navigator mode="modal">
-            <RootStack.Screen  name="Root" component={BottomTabNavigator} options={{headerShown: false}}/>
+            <RootStack.Screen  
+            name="Root" 
+            component={BottomTabNavigator} 
+            options={{headerShown: false}}/>
+            
+            <RootStack.Screen  
+            name="Direction" 
+            component={DirectionScreen} 
+            options={{headerShown: false}}/>
         </RootStack.Navigator>
 
     )
