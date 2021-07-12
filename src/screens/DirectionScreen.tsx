@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: "white", 
         borderRadius: 25,
-        width: _screen.width * 0.4,
+        width: _screen.width * 0.6,
+        height: _screen.height * 0.03 
     }
 })

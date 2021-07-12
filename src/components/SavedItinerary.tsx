@@ -6,7 +6,6 @@ import DirectionInputField from "../screens/DirectionScreen"
 export default function SavedItinerary() {
     return (
         <SafeAreaView>
-            <DirectionInputField />
             <Text>This is the SavedItinerary Page</Text>
         </SafeAreaView>
     )
