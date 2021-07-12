@@ -5,13 +5,13 @@ import { WebView } from 'react-native-webview'
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from 'react-native-webview-leaflet';
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
-import { setMarkerPosition } from "../redux/actions/actionsList"
+import { setDestinationLocation } from "../redux/actions/actionsList"
 import DirectionInputField from "../screens/DirectionScreen"
 
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
-  const markerLocationState = useSelector<RootState, MarkerLocationState>(
-    (state) => state.markerLocationState
+  const markerLocationState = useSelector<RootState, DestinationLocationState>(
+    (state) => state.destinationLocationState
   );
   const dispatch = useDispatch();
   console.log(markerLocationState)
@@ -29,7 +29,7 @@ export default function MapComponent() {
         const position: LatLngObject = message.payload!
           .touchLatLng as LatLngObject;
         // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
-        dispatch(setMarkerPosition({ lat: position.lat, lng: position.lng }));
+        dispatch(setDestinationLocation({ lat: position.lat, lng: position.lng }));
         console.log(markerLocationState)
         break;
       default:
@@ -65,7 +65,7 @@ export default function MapComponent() {
         zoom={10}
         ownPositionMarker={{
           id: '1',
-          position: markerLocationState.markerLocation,
+          position: markerLocationState.destinationLocation,
           icon: "📍",
           size: [24, 24],
           animation: {
@@ -80,7 +80,7 @@ export default function MapComponent() {
             shapeType: MapShapeType.CIRCLE,
             color: "#123123",
             id: "1",
-            center: markerLocationState.markerLocation,
+            center: markerLocationState.destinationLocation,
             radius: 2000
           }
         ]}

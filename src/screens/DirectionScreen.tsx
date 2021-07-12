@@ -5,8 +5,10 @@ import { Formik } from 'formik';
 const _screen = Dimensions.get("screen");
 
 export default function DirectionScreen() {
-    return (
 
+    
+
+    return (
             <Formik
                 initialValues={{ direction: '' }}
                 onSubmit={values => console.log(values)}

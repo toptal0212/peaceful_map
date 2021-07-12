@@ -1,6 +1,6 @@
-export const setMarkerPosition = (newMarkerLocation: LatLngObject): MarkerLocationAction => {
+export const setDestinationLocation = (newdestinationLocation: LatLngObject): MarkerLocationAction => {
     return {
-        type: "SETMARKERLOCATION", 
-        payload: newMarkerLocation,
+        type: "SETDESTINATIONLOCATION", 
+        payload: newdestinationLocation,
     }
 }
