@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView } from "react-native";
+import DirectionInputField from "../screens/DirectionScreen"
 
 
 export default function SavedItinerary() {
     return (
-        <View>
+        <SafeAreaView>
+            <DirectionInputField />
             <Text>This is the SavedItinerary Page</Text>
-        </View>
+        </SafeAreaView>
     )
 }
