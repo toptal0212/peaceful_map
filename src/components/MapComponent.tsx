@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions, View, Text, Alert, SafeAreaView } from "react-native";
-import Constants from 'expo-constants'
-import { WebView } from 'react-native-webview'
-import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from 'react-native-webview-leaflet';
+import Constants from "expo-constants"
+import { WebView } from "react-native-webview"
+import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from "react-native-webview-leaflet";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
-import { setDestinationLocation } from "../redux/actions/actionsList"
-import DirectionInputField from "../screens/DirectionScreen"
+import { setDestinationLocation } from "../redux/actions/actionsList";
+import DirectionInputField from "../screens/DirectionScreen";
 
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
@@ -54,7 +54,7 @@ export default function MapComponent() {
             baseLayerName: "OpenStreetMap",
             url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             attribution:
-              '&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
+              "&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           },
           {
             baseLayerName: "Mapbox",
@@ -64,7 +64,7 @@ export default function MapComponent() {
         mapCenterPosition={{ lat: 35.6762, lng: 139.6503 }}
         zoom={10}
         ownPositionMarker={{
-          id: '1',
+          id: "1",
           position: markerLocationState.destinationLocation,
           icon: "📍",
           size: [24, 24],

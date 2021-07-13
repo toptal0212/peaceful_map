@@ -9,6 +9,6 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
-
+/Tokyo.osm
 # macOS
 .DS_Store
