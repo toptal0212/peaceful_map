@@ -1,6 +1,6 @@
 # peaceful_map
 
-# 🛠 WORK IN PROGRESS 🛠
+# 🛠 WORK IN PROGRESS 🛠 
 
 ## Introduction
 
