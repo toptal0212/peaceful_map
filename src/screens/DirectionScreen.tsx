@@ -14,9 +14,9 @@ export default function DirectionScreen() {
       );
       const dispatch = useDispatch();
 
+    // Fetches the destination when input in the appropriate field.
     const fetchDestination = async() => {
         const destination = await axios.get('https://batch.openaddresses.io/data/jp/tokyo');
-        console.log('🛠',destination)
         dispatch(setDestinationLocation({lat:35.6762, lng: 139.6503}))
     }
 
@@ -33,7 +33,9 @@ export default function DirectionScreen() {
                         onBlur={handleBlur('direction')}
                         value={values.direction}
                     />
-                    <Button onPress={() => fetchDestination()} title="Submit" />
+                    <View style={styles.submitButton}>
+                        <Button onPress={() => fetchDestination()} title="Submit" />
+                    </View>
                 </View>
             )}
         </Formik>
@@ -50,6 +52,11 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 25,
         width: _screen.width * 0.6,
-        height: _screen.height * 0.03
+        height: _screen.height * 0.03,
+    },
+
+    submitButton: { 
+        backgroundColor: "white",
+        borderRadius: 10,
     }
 })

@@ -5,7 +5,7 @@ export const initialState: DestinationLocationState = {
     }
 };
 
-// State of the marker placed on the mapß
+// State of the marker placed on the map.
 export const destinationLocationReducer = (state: DestinationLocationState = initialState, action: MarkerLocationAction) => {
     switch (action.type) {
         case "SETDESTINATIONLOCATION":{

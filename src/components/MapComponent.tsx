@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
 
+const _screen = Dimensions.get("screen");
+
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
   const markerLocationState = useSelector<RootState, DestinationLocationState>(
@@ -40,7 +42,7 @@ export default function MapComponent() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.directionInputField}>
-        <DirectionInputField />
+        <DirectionInputField />  
       </View>
       <WebViewLeaflet
         ref={(ref: WebViewLeaflet) => {
@@ -99,5 +101,6 @@ const styles = StyleSheet.create({
 
   directionInputField: {
     zIndex: 1,
+    marginTop: _screen.height * 0.04
   }
 });
