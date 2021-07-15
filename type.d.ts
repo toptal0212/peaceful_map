@@ -29,3 +29,4 @@ type DestinationLocationAction = {
     type: string,
     payload: LatLngObject 
 }
+
