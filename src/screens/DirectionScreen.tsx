@@ -13,15 +13,6 @@ export default function DirectionScreen() {
         (state) => state.destinationLocationState
     );
     const dispatch = useDispatch();
-    const strict: boolean = true; 
-    const options: {} = {}; 
-    const parser = new SAXParser(strict, options);
-
-    React.useEffect(() => {
-        parser.ontext = (node: any) => {
-            console.log("🦉 OpenNode: ", node)
-        }
-    })
 
     // Fetches the destination when input in the appropriate field.
     const fetchDestination = async () => {
