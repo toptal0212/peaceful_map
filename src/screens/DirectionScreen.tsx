@@ -16,9 +16,26 @@ export default function DirectionScreen() {
 
     // Fetches the destination when input in the appropriate field.
     const fetchDestination = async () => {
-        const destination = await axios.get('http://www.overpass-api.de/api/xapi?*[amenity=cinema][bbox=-180,-90,180,90]');
-        dispatch(setDestinationLocation({ lat: 35.6762, lng: 139.6503 }))
+        const query = `[out:json][timeout:25];
+        (
+          node["amenity"="post_box"]({{bbox}});
+          way["amenity"="post_box"]({{bbox}});
+          relation["amenity"="post_box"]({{bbox}});
+        );
+        out body;
+        >;`
+
+        const destination = await axios({
+            method: "GET",
+            url: "http://www.overpass-api.de/api/xapi?debug=*[amenity=hospital][bbox=13.20524,43.70861,13.22842,43.72338]",
+        });
+        dispatch(setDestinationLocation({ lat: 35.6762, lng: 139.6503 }));
+        console.log("dklasjdadasndkanksdn", destination.data)
     }
+
+    React.useEffect(() => {
+        fetchDestination();
+    }, [])
 
     return (
         <Formik
