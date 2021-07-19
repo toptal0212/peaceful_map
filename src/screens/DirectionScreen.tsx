@@ -4,51 +4,41 @@ import { Formik } from 'formik';
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation } from "../redux/actions/actionsList";
-import { SAXParser } from "sax-ts"
 
 const _screen = Dimensions.get("screen");
 
 export default function DirectionScreen() {
-    const markerLocationState = useSelector<RootState, DestinationLocationState>(
-        (state) => state.destinationLocationState
+    const destinationInputRef = useRef<TextInput | null>();
+    const inputedDestination = useSelector<RootState, DestinationState>(
+        (state) => state.destinationState
     );
     const dispatch = useDispatch();
 
     // Fetches the destination when input in the appropriate field.
     const fetchDestination = async () => {
-        const query = `[out:json][timeout:25];
-        (
-          node["amenity"="post_box"]({{bbox}});
-          way["amenity"="post_box"]({{bbox}});
-          relation["amenity"="post_box"]({{bbox}});
-        );
-        out body;
-        >;`
-
         const destination = await axios({
             method: "GET",
-            url: "http://www.overpass-api.de/api/xapi?debug=*[amenity=hospital][bbox=13.20524,43.70861,13.22842,43.72338]",
+            url: `https://nominatim.openstreetmap.org/search.php?city=${inputedDestination.nameEn}&country=Japan&format=jsonv2`,
         });
-        dispatch(setDestinationLocation({ lat: 35.6762, lng: 139.6503 }));
-        console.log("dklasjdadasndkanksdn", destination.data)
+        const destinationName = destination.data[0].display_name.split(",")[0].toLowerCase();
+        console.log(destinationName);
+        dispatch(setDestinationLocation({ lat: destination.data[0].lat, lng: destination.data[0].lon }, destinationName));
     }
-
-    React.useEffect(() => {
-        fetchDestination();
-    }, [])
 
     return (
         <Formik
-            initialValues={{ direction: '' }}
-            onSubmit={values => console.log(values)}
+            initialValues={{ destination: inputedDestination.nameEn }}
+            onSubmit={values => console.log("🎉", values.destination)}
         >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
                 <View style={styles.container}>
                     <TextInput
                         style={styles.inputContainer}
-                        onChangeText={handleChange('direction')}
-                        onBlur={handleBlur('direction')}
-                        value={values.direction}
+                        onChangeText={() => {
+                            handleChange('destination')
+                        }}
+                        onBlur={handleBlur('destination')}
+                        value={values.destination}
                     />
                     <View style={styles.submitButton}>
                         <Button onPress={() => fetchDestination()} title="Submit" />

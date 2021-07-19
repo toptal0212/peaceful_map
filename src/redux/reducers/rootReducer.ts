@@ -1,7 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { destinationLocationReducer } from "./destinationLocation";
+import { destinationReducer } from "./destination";
 
 // Accesses all reducers from the root. 
 export const rootReducers = combineReducers({
-    destinationLocationState: destinationLocationReducer
+    destinationState: destinationReducer
 })

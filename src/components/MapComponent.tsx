@@ -12,8 +12,8 @@ const _screen = Dimensions.get("screen");
 
 export default function MapComponent() {
   const webViewLeafletRef = useRef<WebViewLeaflet>();
-  const markerLocationState = useSelector<RootState, DestinationLocationState>(
-    (state) => state.destinationLocationState
+  const markerLocationState = useSelector<RootState, DestinationState>(
+    (state) => state.destinationState
   );
   const dispatch = useDispatch();
   console.log(markerLocationState)
@@ -32,7 +32,6 @@ export default function MapComponent() {
           .touchLatLng as LatLngObject;
         // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
         dispatch(setDestinationLocation({ lat: position.lat, lng: position.lng }));
-        console.log(markerLocationState)
         break;
       default:
         console.log("App received", message);
@@ -67,7 +66,7 @@ export default function MapComponent() {
         zoom={10}
         ownPositionMarker={{
           id: "1",
-          position: markerLocationState.destinationLocation,
+          position: markerLocationState.location,
           icon: "📍",
           size: [24, 24],
           animation: {
@@ -82,7 +81,7 @@ export default function MapComponent() {
             shapeType: MapShapeType.CIRCLE,
             color: "#123123",
             id: "1",
-            center: markerLocationState.destinationLocation,
+            center: markerLocationState.location,
             radius: 2000
           }
         ]}

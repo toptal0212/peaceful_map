@@ -18,15 +18,17 @@ type LatLngObject = { lat: number | undefined; lng: number | undefined };
 /**** Redux Store ****/
 
 interface RootState {
-    destinationLocationState: DestinationLocationState,
+    destinationState: DestinationLocationState,
 }
 
-interface DestinationLocationState {
-    destinationLocation: LatLngObject,
+interface DestinationState {
+    location: LatLngObject,
+    nameEn?: string | undefined,
 }
 
-type DestinationLocationAction = { 
+type DestinationAction = { 
     type: string,
-    payload: LatLngObject 
+    locationPayload: LatLngObject, 
+    nameEnPayload: string | undefined 
 }
 
