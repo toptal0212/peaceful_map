@@ -22,7 +22,7 @@ interface RootState {
 }
 
 interface DestinationState {
-    location: LatLngObject,
+    location?: LatLngObject,
     nameEn?: string | undefined,
 }
 

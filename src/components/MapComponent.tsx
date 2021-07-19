@@ -25,7 +25,6 @@ export default function MapComponent() {
         Alert.alert(
           `Map Marker Touched, ID: ${message.payload?.mapMarkerID || "unknown"}`
         );
-
         break;
       case WebViewLeafletEvents.ON_MAP_TOUCHED:
         const position: LatLngObject = message.payload!
@@ -41,7 +40,7 @@ export default function MapComponent() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.directionInputField}>
-        <DirectionInputField />  
+        <DirectionInputField />
       </View>
       <WebViewLeaflet
         ref={(ref: WebViewLeaflet) => {
@@ -62,11 +61,11 @@ export default function MapComponent() {
             url: `https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=${Constants.manifest?.extra.MAPBOXTOKEN}`,
           }
         ]}
-        mapCenterPosition={{ lat: 35.6762, lng: 139.6503 }}
+        mapCenterPosition={{ lat: markerLocationState.location?.lat, lng: markerLocationState.location?.lng }}
         zoom={10}
         ownPositionMarker={{
           id: "1",
-          position: markerLocationState.location,
+          position: { lat: markerLocationState.location?.lat, lng: markerLocationState.location?.lng },
           icon: "📍",
           size: [24, 24],
           animation: {
