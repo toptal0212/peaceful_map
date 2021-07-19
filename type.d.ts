@@ -13,7 +13,10 @@ type BottomParamList = {
 
 /**** MapComponent Param List ****/
 
-type LatLngObject = { lat: number | undefined; lng: number | undefined };
+type LatLng = { 
+    lat: number | Value, 
+    lng: number | Value
+};
 
 /**** Redux Store ****/
 
@@ -22,13 +25,13 @@ interface RootState {
 }
 
 interface DestinationState {
-    location?: LatLngObject,
+    location?: LatLng,
     nameEn?: string | undefined,
 }
 
 type DestinationAction = { 
     type: string,
-    locationPayload: LatLngObject, 
+    locationPayload: LatLng, 
     nameEnPayload: string | undefined 
 }
 

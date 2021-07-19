@@ -7,6 +7,7 @@ import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
+import MapView, { Marker, UrlTile } from 'react-native-maps';
 
 const _screen = Dimensions.get("screen");
 
@@ -16,76 +17,39 @@ export default function MapComponent() {
     (state) => state.destinationState
   );
   const dispatch = useDispatch();
-  console.log(markerLocationState)
-
-  // Receives information about the map in the form of object.
-  const onMessageReceived = (message: WebviewLeafletMessage) => {
-    switch (message.event) {
-      case WebViewLeafletEvents.ON_MAP_MARKER_CLICKED:
-        Alert.alert(
-          `Map Marker Touched, ID: ${message.payload?.mapMarkerID || "unknown"}`
-        );
-        break;
-      case WebViewLeafletEvents.ON_ZOOM:
-        const position: LatLngObject = message.payload!
-          .touchLatLng as LatLngObject;
-        // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
-        dispatch(setDestinationLocation({ lat: position.lat, lng: position.lng }));
-        break;
-      default:
-        console.log("App received", message);
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.directionInputField}>
         <DirectionInputField />
       </View>
-      <WebViewLeaflet
-        ref={(ref: WebViewLeaflet) => {
-          webViewLeafletRef.current = ref;
-        }}
-        backgroundColor={"purple"}
-        onMessageReceived={onMessageReceived}
-        mapLayers={[
-          {
-            baseLayerIsChecked: true,
-            baseLayerName: "OpenStreetMap",
-            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            attribution:
-              "&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+      <MapView
+        style={styles.map}
+        camera={{
+          center: {
+            latitude: markerLocationState.location?.lat,
+            longitude: markerLocationState.location?.lng
           },
-          {
-            baseLayerName: "Mapbox",
-            url: `https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=${Constants.manifest?.extra.MAPBOXTOKEN}`,
-          }
-        ]}
-        mapCenterPosition={{ lat: markerLocationState.location?.lat, lng: markerLocationState.location?.lng }}
-        zoom={10}
-        ownPositionMarker={{
-          id: "1",
-          position: { lat: markerLocationState.location?.lat, lng: markerLocationState.location?.lng },
-          icon: "📍",
-          size: [24, 24],
-          animation: {
-            type: AnimationType.FADE,
-            duration: .5,
-            delay: 0,
-          }
+          heading: 0,
+          pitch: 0,
+          zoom: 0,
+          altitude: 0
         }}
-
-        mapShapes={[
-          {
-            shapeType: MapShapeType.CIRCLE,
-            color: "#123123",
-            id: "1",
-            center: markerLocationState.location,
-            radius: 2000
-          }
-        ]}
-        onError={() => { return <Text>An error occured when loading the map.😵</Text> }}
-      />
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        zoomEnabled={true}>
+        <UrlTile
+          urlTemplate="http://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maximumZ={19}
+          flipY={false}
+        />
+        <Marker
+          key={markerLocationState.nameEn}
+          coordinate={{
+            latitude: markerLocationState.location?.lat,
+            longitude: markerLocationState.location?.lng
+          }} />
+      </MapView>
     </SafeAreaView>
   );
 };
@@ -97,8 +61,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  map: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+
   directionInputField: {
     zIndex: 1,
-    marginTop: _screen.height * 0.04
+    marginTop: _screen.height * 0.05
   }
 });
