@@ -26,7 +26,7 @@ export default function MapComponent() {
           `Map Marker Touched, ID: ${message.payload?.mapMarkerID || "unknown"}`
         );
         break;
-      case WebViewLeafletEvents.ON_MAP_TOUCHED:
+      case WebViewLeafletEvents.ON_ZOOM:
         const position: LatLngObject = message.payload!
           .touchLatLng as LatLngObject;
         // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
