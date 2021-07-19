@@ -16,13 +16,16 @@ export default function DirectionScreen() {
 
     // Fetches the destination when input in the appropriate field.
     const fetchDestination = async (input: string | undefined) => {
+        // Call to nominatim API to get the address accordind to input.
         const destination = await axios({
             method: "GET",
             url: `https://nominatim.openstreetmap.org/search.php?city=${input?.toLowerCase()}&country=Japan&format=jsonv2`,
         });
-        const destinationName = destination.data[0].display_name.split(",")[0].toLowerCase();
-        console.log(destinationName);
-        dispatch(setDestinationLocation({ lat: destination.data[0].lat, lng: destination.data[0].lon }, input?.toLocaleLowerCase()));
+
+        dispatch(setDestinationLocation({
+            lat: Number(destination.data[0].lat),
+            lng: Number(destination.data[0].lon)
+        }, input?.toLocaleLowerCase()));
     }
 
     return (
@@ -39,7 +42,7 @@ export default function DirectionScreen() {
                         value={values.destination}
                     />
                     <View style={styles.submitButton}>
-                        <Button onPress={() =>handleSubmit()} title="Submit" />
+                        <Button onPress={() => handleSubmit()} title="Submit" />
                     </View>
                 </View>
             )}
