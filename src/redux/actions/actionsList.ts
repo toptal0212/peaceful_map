@@ -4,4 +4,11 @@ export const setDestinationLocation = (newdestinationLocation: LatLng, newDestin
         locationPayload: newdestinationLocation,
         nameEnPayload: newDestinationNameEn
     }
+}; 
+
+export const setUserLocation = (newUserLocation: LatLng): UserLocationAction => {
+    return {
+        type: "SETUSERLOCATION", 
+        locationPayload: newUserLocation,
+    }
 }

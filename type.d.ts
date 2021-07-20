@@ -22,6 +22,7 @@ type LatLng = {
 
 interface RootState {
     destinationState: DestinationLocationState,
+    userLocationState: UserLocationState,
 }
 
 interface DestinationState {
@@ -33,5 +34,14 @@ type DestinationAction = {
     type: string,
     locationPayload: LatLng, 
     nameEnPayload: string | undefined 
+}
+
+type UserLocationState = {
+    location: LatLng,
+}
+
+type UserLocationAction = {
+    type: string, 
+    locationPayload: LatLng, 
 }
 

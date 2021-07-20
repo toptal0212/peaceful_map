@@ -5,7 +5,7 @@ import { WebView } from "react-native-webview"
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from "react-native-webview-leaflet";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
-import { setDestinationLocation } from "../redux/actions/actionsList";
+import { setDestinationLocation, setUserLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
 import MapView, { Marker, UrlTile } from 'react-native-maps';
 
@@ -16,7 +16,28 @@ export default function MapComponent() {
   const markerLocationState = useSelector<RootState, DestinationState>(
     (state) => state.destinationState
   );
+  const userLocationState = useSelector<RootState, UserLocationState>(
+    (state) => state.userLocationState
+  );
   const dispatch = useDispatch();
+
+  const getUserLocation = async () => {
+    try {
+      let location = await Location.getCurrentPositionAsync();
+      
+      dispatch(setUserLocation({ 
+        lat: Number(location.coords.latitude), 
+        lng: Number(location.coords.longitude),
+      }));
+    } catch (e) {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      console.log("Error during user location", e, status)
+    }
+  }
+
+  React.useEffect(() => {
+    getUserLocation();
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -32,15 +53,17 @@ export default function MapComponent() {
           },
           heading: 0,
           pitch: 0,
-          zoom: 0,
-          altitude: 0
+          zoom: 10,
+          altitude: 12000,
         }}
         showsUserLocation={true}
         showsMyLocationButton={true}
-        zoomEnabled={true}>
+        showsTraffic={false}
+        zoomEnabled={true}
+        zoomControlEnabled={false}>
         <UrlTile
           urlTemplate="http://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          maximumZ={19}
+          maximumZ={100}
           flipY={false}
         />
         <Marker
