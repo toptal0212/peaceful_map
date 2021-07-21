@@ -22,16 +22,15 @@ export default function MapComponent() {
   const dispatch = useDispatch();
 
   const getUserLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
     try {
       let location = await Location.getCurrentPositionAsync();
-      
       dispatch(setUserLocation({ 
         lat: Number(location.coords.latitude), 
         lng: Number(location.coords.longitude),
       }));
-    } catch (e) {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      console.log("Error during user location", e, status)
+    } catch (error) {
+      console.log(error, "Error during user location. Geolocalisation status: ", status)
     }
   }
 
