@@ -16,6 +16,7 @@
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "expo": "~42.0.0",
+    "expo-constants": "~11.0.1",
     "expo-location": "^12.1.2",
     "expo-status-bar": "~1.0.4",
     "formik": "^2.2.9",

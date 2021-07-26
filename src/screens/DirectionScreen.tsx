@@ -4,9 +4,9 @@ import { Formik } from 'formik';
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation } from "../redux/actions/actionsList";
-import Constants from "expo-constants";\
+import Constants from "expo-constants";
 
-const routingKey = Constants.manifest?.extra.OSRMTOKEN;
+const routingKey = Constants.manifest?.extra?.OSRMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function DirectionScreen() {
@@ -34,7 +34,7 @@ export default function DirectionScreen() {
     const getDirection = async() => {
         const getItinerary = await axios({
             method:"GET",
-            url:`https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${Constants.manifest}&start=8.681495,49.41461&end=8.687872,49.420318`
+            url:`https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=8.681495,49.41461&end=8.687872,49.420318`
         })
     }
 
