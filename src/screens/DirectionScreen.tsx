@@ -14,6 +14,9 @@ export default function DirectionScreen() {
     const inputDestination = useSelector<RootState, DestinationState>(
         (state) => state.destinationState
     );
+    const userLocationState = useSelector<RootState, UserLocationState>(
+        (state) => state.userLocationState
+    );
     const dispatch = useDispatch();
 
     // Fetches the destination when input in the appropriate field.
@@ -31,12 +34,24 @@ export default function DirectionScreen() {
     }
 
     // Gets the direction to the destination avoiding noisy roads.
-    const getDirection = async() => {
-        const getItinerary = await axios({
-            method:"GET",
-            url:`https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=8.681495,49.41461&end=8.687872,49.420318`
-        })
+    const getDirection = async () => {
+        try {
+             await axios({
+                method: "GET",
+                url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}
+                &start=${userLocationState.location.lng},${userLocationState.location.lat}
+                &end=${inputDestination.location?.lng},${inputDestination.location?.lat}`
+            });
+        } catch (error) {
+            console.log(error, "Error when drawing the itinerary.")
+        }
+
     }
+
+    React.useEffect(() => {
+        getDirection()
+        console.log(routingKey, userLocationState.location, inputDestination.location)
+    })
 
     return (
         <Formik
