@@ -5,6 +5,7 @@ export default ({ config }: any) => {
     ...config,
     extra: {
       MAPBOXTOKEN: process.env.MAPBOXTOKEN,
+      OSRMTOKEN: process.env.OSRMTOKEN,
     },
   };
 };

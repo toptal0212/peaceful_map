@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions, View, Text, Alert, SafeAreaView } from "react-native";
-import Constants from "expo-constants"
-import { WebView } from "react-native-webview"
 import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from "react-native-webview-leaflet";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
