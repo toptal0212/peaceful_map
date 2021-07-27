@@ -4,9 +4,7 @@ import { Formik } from 'formik';
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation } from "../redux/actions/actionsList";
-import Constants from "expo-constants";
 
-const routingKey = Constants.manifest?.extra?.OSRMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function DirectionScreen() {
@@ -24,7 +22,8 @@ export default function DirectionScreen() {
         // Call to nominatim API to get the address accordind to input.
         const destination = await axios({
             method: "GET",
-            url: `https://nominatim.openstreetmap.org/search.php?city=${input?.toLowerCase()}&country=Japan&format=jsonv2`,
+            url: `https://nominatim.openstreetmap.org/search.php?city=${input?.toLowerCase()}
+            &country=Japan&format=jsonv2`,
         });
 
         dispatch(setDestinationLocation({
@@ -32,26 +31,6 @@ export default function DirectionScreen() {
             lng: Number(destination.data[0].lon)
         }, input?.toLocaleLowerCase()));
     }
-
-    // Gets the direction to the destination avoiding noisy roads.
-    const getDirection = async () => {
-        try {
-             await axios({
-                method: "GET",
-                url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}
-                &start=${userLocationState.location.lng},${userLocationState.location.lat}
-                &end=${inputDestination.location?.lng},${inputDestination.location?.lat}`
-            });
-        } catch (error) {
-            console.log(error, "Error when drawing the itinerary.")
-        }
-
-    }
-
-    React.useEffect(() => {
-        getDirection()
-        console.log(routingKey, userLocationState.location, inputDestination.location)
-    })
 
     return (
         <Formik
@@ -68,7 +47,6 @@ export default function DirectionScreen() {
                     />
                     <View style={styles.submitButton}>
                         <Button onPress={() => handleSubmit()} title="Submit" />
-                        <Button onPress={() => getDirection()} title="Submit" />
                     </View>
                 </View>
             )}

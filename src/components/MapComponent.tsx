@@ -5,15 +5,22 @@ import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation, setUserLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
-import MapView, { Marker, UrlTile } from 'react-native-maps';
+import MapView, { Marker, UrlTile, Geojson } from 'react-native-maps';
+import axios from "axios";
+import Constants from "expo-constants";
 
+const routingKey = Constants.manifest?.extra?.ORSMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function MapComponent() {
+  const [array, setArray] = useState<Geojson>();
   const webViewLeafletRef = useRef<WebViewLeaflet>();
   const markerLocationState = useSelector<RootState, DestinationState>(
     (state) => state.destinationState
   );
+  const inputDestination = useSelector<RootState, DestinationState>(
+    (state) => state.destinationState
+);
   const userLocationState = useSelector<RootState, UserLocationState>(
     (state) => state.userLocationState
   );
@@ -23,18 +30,37 @@ export default function MapComponent() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     try {
       let location = await Location.getCurrentPositionAsync();
-      dispatch(setUserLocation({ 
-        lat: Number(location.coords.latitude), 
+      dispatch(setUserLocation({
+        lat: Number(location.coords.latitude),
         lng: Number(location.coords.longitude),
       }));
     } catch (error) {
       console.log(error, "Error during user location. Geolocalisation status: ", status)
     }
   }
+  // Gets the direction to the destination avoiding noisy roads.
+  const getDirection = async () => {
+    try {
+         const intinerary = await axios({
+            method: "GET",
+            url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=5b3ce3597851110001cf62484911125b32fc49b19a68258c1156fe33&start=139.7197733,35.731666&end=139.7084043,35.7358426`
+        });
+        setArray(intinerary.data.features[0].geometry)
+        console.log(array)
+        return intinerary;
+    } catch (error) {
+        console.log(error, "Error when drawing the itinerary.")
+    }
+}
+
+React.useEffect(() => {
+    getDirection()
+    console.log(routingKey, userLocationState.location, inputDestination.location)
+}, [inputDestination])
 
   React.useEffect(() => {
     getUserLocation();
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,6 +89,13 @@ export default function MapComponent() {
           maximumZ={100}
           flipY={false}
         />
+        <Geojson 
+      geojson={myPlace} 
+      strokeColor="red"
+      fillColor="green"
+      strokeWidth={2}
+    />
+
         <Marker
           key={markerLocationState.nameEn}
           coordinate={{
