@@ -13,7 +13,7 @@ const routingKey = Constants.manifest?.extra?.ORSMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function MapComponent() {
-  const [array, setArray] = useState<Geojson>();
+  const [itinerary, setItinerary] = useState<Itinerary>();
   const webViewLeafletRef = useRef<WebViewLeaflet>();
   const markerLocationState = useSelector<RootState, DestinationState>(
     (state) => state.destinationState
@@ -39,22 +39,34 @@ export default function MapComponent() {
     }
   }
   // Gets the direction to the destination avoiding noisy roads.
-  const getDirection = async () => {
+  const getItinerary = async () => {
     try {
-         const intinerary = await axios({
+         const direction = await axios({
             method: "GET",
-            url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=5b3ce3597851110001cf62484911125b32fc49b19a68258c1156fe33&start=139.7197733,35.731666&end=139.7084043,35.7358426`
+            url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
+            ${userLocationState.location.lng},${userLocationState.location.lat}
+            &end=${inputDestination.location?.lng},${inputDestination.location?.lat}`
         });
-        setArray(intinerary.data.features[0].geometry)
-        console.log(array)
-        return intinerary;
+
+        const itinerary = {
+          type: direction.data.type,
+          features: {
+            type: direction.data.features[0].type,
+            properties: direction.data.features[0].properties,
+            geometry: direction.data.features[0].geometry,
+          }
+        } 
+
+        setItinerary(itinerary)
+        console.log(itinerary)
     } catch (error) {
         console.log(error, "Error when drawing the itinerary.")
     }
 }
 
+// Test purposes
 React.useEffect(() => {
-    getDirection()
+    getItinerary()
     console.log(routingKey, userLocationState.location, inputDestination.location)
 }, [inputDestination])
 
@@ -89,12 +101,7 @@ React.useEffect(() => {
           maximumZ={100}
           flipY={false}
         />
-        <Geojson 
-      geojson={myPlace} 
-      strokeColor="red"
-      fillColor="green"
-      strokeWidth={2}
-    />
+      
 
         <Marker
           key={markerLocationState.nameEn}

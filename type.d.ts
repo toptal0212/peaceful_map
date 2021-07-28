@@ -18,6 +18,20 @@ type LatLng = {
     lng: number | Value
 };
 
+type GeoFeatures = { 
+    type: string, 
+    properties?: undefined,
+    geometry: {
+        type: string,
+        coordinates: number[][],
+    }
+}
+
+type Itinerary = {
+    type: string, 
+    features: GeoFeatures
+}
+
 /**** Redux Store ****/
 
 interface RootState {
@@ -44,4 +58,5 @@ type UserLocationAction = {
     type: string, 
     locationPayload: LatLng, 
 }
+
 
