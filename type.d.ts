@@ -35,7 +35,7 @@ type Itinerary = {
 /**** Redux Store ****/
 
 interface RootState {
-    destinationState: DestinationLocationState,
+    destinationState: DestinationState,
     userLocationState: UserLocationState,
 }
 
