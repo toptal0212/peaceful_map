@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions, View, Text, Alert, SafeAreaView } from "react-native";
-import { WebViewLeaflet, WebviewLeafletMessage, WebViewLeafletEvents, AnimationType, MapShapeType } from "react-native-webview-leaflet";
+import { WebViewLeaflet } from "react-native-webview-leaflet";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 import { setDestinationLocation, setUserLocation } from "../redux/actions/actionsList";
@@ -48,7 +48,7 @@ export default function MapComponent() {
             &end=${inputDestination.location?.lng},${inputDestination.location?.lat}`
         });
 
-        const itinerary = {
+        const itinerary: Itinerary = {
           type: direction.data.type,
           features: {
             type: direction.data.features[0].type,
@@ -58,7 +58,7 @@ export default function MapComponent() {
         } 
 
         setItinerary(itinerary)
-        console.log(itinerary)
+        console.log(itinerary, "🛠")
     } catch (error) {
         console.log(error, "Error when drawing the itinerary.")
     }
@@ -101,7 +101,6 @@ React.useEffect(() => {
           maximumZ={100}
           flipY={false}
         />
-      
 
         <Marker
           key={markerLocationState.nameEn}
