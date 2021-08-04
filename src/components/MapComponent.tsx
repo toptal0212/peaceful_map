@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Dimensions, View, Text, Alert, SafeAreaView } from "react-native";
-import { WebViewLeaflet } from "react-native-webview-leaflet";
+import { StyleSheet, Dimensions, View, SafeAreaView } from "react-native";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
-import { setDestinationLocation, setUserLocation } from "../redux/actions/actionsList";
+import { setUserLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
 import MapView, { Marker, UrlTile, Geojson } from 'react-native-maps';
 import axios from "axios";
@@ -13,8 +12,7 @@ const routingKey = Constants.manifest?.extra?.ORSMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function MapComponent() {
-  const [itinerary, setItinerary] = useState<Itinerary>();
-  const webViewLeafletRef = useRef<WebViewLeaflet>();
+  const [itinerary, setItinerary] = useState<any>();
   const markerLocationState = useSelector<RootState, DestinationState>(
     (state) => state.destinationState
   );
@@ -41,7 +39,7 @@ export default function MapComponent() {
   // Gets the direction to the destination avoiding noisy roads.
   const getItinerary = async () => {
     try {
-         const direction = await axios({
+         const direction  = await axios({
             method: "GET",
             url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
             ${userLocationState.location.lng},${userLocationState.location.lat}
@@ -58,13 +56,13 @@ export default function MapComponent() {
         } 
 
         setItinerary(itinerary)
-        console.log(itinerary, "🛠")
+        console.log(direction.data, "🛠")
     } catch (error) {
         console.log(error, "Error when drawing the itinerary.")
     }
 }
 
-// Test purposes
+// FOR TEST PURPOSES.
 React.useEffect(() => {
     getItinerary()
     console.log(routingKey, userLocationState.location, inputDestination.location)
@@ -73,6 +71,20 @@ React.useEffect(() => {
   React.useEffect(() => {
     getUserLocation();
   }, []);
+
+  const myPlace = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: [64.165329, 48.844287],
+        }
+      }
+    ]
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -101,7 +113,12 @@ React.useEffect(() => {
           maximumZ={100}
           flipY={false}
         />
-
+        <Geojson
+          geojson={itinerary}
+          strokeColor="red"
+          strokeWidth={2}
+          lineDashPattern={itinerary?.features.geometry.coordinates}
+        />
         <Marker
           key={markerLocationState.nameEn}
           coordinate={{

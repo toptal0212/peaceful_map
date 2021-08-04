@@ -23,7 +23,7 @@ type GeoFeatures = {
     properties?: undefined,
     geometry: {
         type: string,
-        coordinates: number[][],
+        coordinates: number[],
     }
 }
 
