@@ -18,12 +18,14 @@ type LatLng = {
     lng: number | Value
 };
 
+type Position = number[];
+
 type GeoFeatures = { 
     type: string, 
     properties?: undefined,
     geometry: {
         type: string,
-        coordinates: number[],
+        coordinates: Position[][],
     }
 }
 

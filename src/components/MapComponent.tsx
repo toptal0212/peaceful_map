@@ -55,7 +55,7 @@ export default function MapComponent() {
         } 
 
         setItinerary(itinerary)
-        console.log(direction.data, "🛠")
+        console.log(itinerary?.features.geometry.coordinates, "🛠")
     } catch (error) {
         console.log(error, "Error when drawing the itinerary.")
     }
@@ -102,7 +102,8 @@ React.useEffect(() => {
           geojson={itinerary}
           strokeColor="red"
           strokeWidth={2}
-          lineDashPattern={itinerary?.features.geometry.coordinates}
+          lineDashPattern={itinerary?.features.geometry.coordinates.map(
+            (coordinate: number[]) => { return coordinate; })}
         />
         <Marker
           key={markerLocationState.nameEn}
