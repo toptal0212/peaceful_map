@@ -1,4 +1,4 @@
-import React, { StrictMode, useEffect, useRef, useState } from "react";
+import * as React from "react";
 import { StyleSheet, Dimensions, View, Button, TextInput } from "react-native";
 import { Formik } from 'formik';
 import axios from "axios"
@@ -8,13 +8,10 @@ import { setDestinationLocation } from "../redux/actions/actionsList";
 const _screen = Dimensions.get("screen");
 
 export default function DirectionScreen() {
-    const destinationInputRef = useRef<TextInput | null>();
     const inputDestination = useSelector<RootState, DestinationState>(
-        (state) => state.destinationState
-    );
+        (state) => state.destinationState);
     const userLocationState = useSelector<RootState, UserLocationState>(
-        (state) => state.userLocationState
-    );
+        (state) => state.userLocationState);
     const dispatch = useDispatch();
 
     // Fetches the destination when input in the appropriate field.

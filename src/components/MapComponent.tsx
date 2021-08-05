@@ -14,16 +14,14 @@ const _screen = Dimensions.get("screen");
 export default function MapComponent() {
   const [itinerary, setItinerary] = useState<any>();
   const markerLocationState = useSelector<RootState, DestinationState>(
-    (state) => state.destinationState
-  );
+    (state) => state.destinationState);
   const inputDestination = useSelector<RootState, DestinationState>(
-    (state) => state.destinationState
-);
+    (state) => state.destinationState);
   const userLocationState = useSelector<RootState, UserLocationState>(
-    (state) => state.userLocationState
-  );
+    (state) => state.userLocationState);
   const dispatch = useDispatch();
 
+  // Uses expo-location to get user's current location and update it.
   const getUserLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     try {
@@ -36,6 +34,7 @@ export default function MapComponent() {
       console.log(error, "Error during user location. Geolocalisation status: ", status)
     }
   }
+
   // Gets the direction to the destination avoiding noisy roads.
   const getItinerary = async () => {
     try {
@@ -71,20 +70,6 @@ React.useEffect(() => {
   React.useEffect(() => {
     getUserLocation();
   }, []);
-
-  const myPlace = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'Point',
-          coordinates: [64.165329, 48.844287],
-        }
-      }
-    ]
-  };
 
   return (
     <SafeAreaView style={styles.container}>
