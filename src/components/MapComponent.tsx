@@ -99,7 +99,6 @@ React.useEffect(() => {
           flipY={false}
         />
         <Geojson
-          geojson={itinerary}
           strokeColor="red"
           strokeWidth={2}
           lineDashPattern={itinerary?.features.geometry.coordinates.map(
