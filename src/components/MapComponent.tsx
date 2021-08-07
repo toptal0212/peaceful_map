@@ -54,7 +54,7 @@ export default function MapComponent() {
           }
         } 
 
-        setItinerary(itinerary)
+        setItinerary(direction.data)
         console.log(itinerary?.features.geometry.coordinates, "🛠")
     } catch (error) {
         console.log(error, "Error when drawing the itinerary.")
@@ -99,6 +99,7 @@ React.useEffect(() => {
           flipY={false}
         />
         <Geojson
+          geojson={itinerary}
           strokeColor="red"
           strokeWidth={2}
           lineDashPattern={itinerary?.features.geometry.coordinates.map(
