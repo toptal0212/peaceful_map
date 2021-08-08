@@ -20,18 +20,18 @@ type LatLng = {
 
 type Position = number[];
 
-type GeoFeatures = { 
+type GeoJsonObject = { 
     type: string, 
-    properties?: undefined,
+    properties?: any,
     geometry: {
         type: string,
-        coordinates: Position[][],
+        coordinates: Position,
     }
 }
 
 type Itinerary = {
     type: string, 
-    features: GeoFeatures
+    features: GeoJsonObject[]
 }
 
 /**** Redux Store ****/

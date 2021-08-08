@@ -4,7 +4,7 @@ import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
-import MapView, { Marker, UrlTile, Geojson } from 'react-native-maps';
+import MapView, { Marker, UrlTile, Geojson, Polyline } from 'react-native-maps';
 import axios from "axios";
 import Constants from "expo-constants";
 
@@ -36,36 +36,35 @@ export default function MapComponent() {
   }
 
   // Gets the direction to the destination avoiding noisy roads.
-  const getItinerary = async () => {
+  const getItinerary: any = async () => {
     try {
-         const direction  = await axios({
-            method: "GET",
-            url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
+      const direction = await axios({
+        method: "GET",
+        url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
             ${userLocationState.location.lng},${userLocationState.location.lat}
             &end=${inputDestination.location?.lng},${inputDestination.location?.lat}`
-        });
+      });
 
-        const itinerary: Itinerary = {
-          type: direction.data.type,
-          features: {
-            type: direction.data.features[0].type,
-            properties: direction.data.features[0].properties,
-            geometry: direction.data.features[0].geometry,
-          }
-        } 
-
-        setItinerary(direction.data)
-        console.log(itinerary?.features.geometry.coordinates, "🛠")
+      const itinerary: any = {
+        type: direction.data.type,
+        features: [{
+          type: direction.data.features[0].type,
+          properties: direction.data.features[0].properties,
+          geometry: direction.data.features[0].geometry,
+        }]
+      }
+      setItinerary(itinerary)
+      console.log(itinerary, "🛠")
     } catch (error) {
-        console.log(error, "Error when drawing the itinerary.")
+      console.log(error, "Error when drawing the itinerary.")
     }
-}
+  }
 
-// FOR TEST PURPOSES.
-React.useEffect(() => {
+  // FOR TEST PURPOSES.
+  React.useEffect(() => {
     getItinerary()
     console.log(routingKey, userLocationState.location, inputDestination.location)
-}, [inputDestination])
+  }, [inputDestination])
 
   React.useEffect(() => {
     getUserLocation();
@@ -98,13 +97,13 @@ React.useEffect(() => {
           maximumZ={100}
           flipY={false}
         />
-        <Geojson
-          geojson={itinerary}
-          strokeColor="red"
-          strokeWidth={2}
-          lineDashPattern={itinerary?.features.geometry.coordinates.map(
-            (coordinate: number[]) => { return coordinate; })}
-        />
+        <Polyline
+          strokeWidth={5}
+          geodesic={true}
+          coordinates={[{latitude: 35.7358426, longitude: 139.7084043}]}
+          strokeColor="rgba(0,0,200,0.5)"
+          lineDashPattern={[35.7358426, 139.7084043]}
+                    />
         <Marker
           key={markerLocationState.nameEn}
           coordinate={{
