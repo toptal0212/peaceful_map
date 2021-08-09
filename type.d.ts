@@ -14,11 +14,11 @@ type BottomParamList = {
 /**** MapComponent Param List ****/
 
 type LatLng = { 
-    lat: number | Value, 
-    lng: number | Value
+    latitude: number | Value, 
+    longitude: number | Value
 };
 
-type Position = number[];
+type Position = number[][] | undefined;
 
 type GeoJsonObject = { 
     type: string, 

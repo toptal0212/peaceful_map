@@ -24,8 +24,8 @@ export default function DirectionScreen() {
         });
 
         dispatch(setDestinationLocation({
-            lat: Number(destination.data[0].lat),
-            lng: Number(destination.data[0].lon)
+            latitude: Number(destination.data[0].lat),
+            longitude: Number(destination.data[0].lon)
         }, input?.toLocaleLowerCase()));
     }
 

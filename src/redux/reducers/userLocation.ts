@@ -1,7 +1,7 @@
 export const initialState: UserLocationState = {
     location: {
-        lat: 0,
-        lng: 0,
+        latitude: 0,
+        longitude: 0,
     },
 };
 

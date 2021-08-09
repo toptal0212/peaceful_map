@@ -1,7 +1,7 @@
 export const initialState: DestinationState = {
     location: {
-        lat: 0,
-        lng: 0,
+        latitude: 0,
+        longitude: 0,
     },
     nameEn: "",
 };

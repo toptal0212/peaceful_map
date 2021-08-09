@@ -4,7 +4,7 @@ import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserLocation } from "../redux/actions/actionsList";
 import DirectionInputField from "../screens/DirectionScreen";
-import MapView, { Marker, UrlTile, Geojson, Polyline } from 'react-native-maps';
+import MapView, { Marker, UrlTile, Geojson, Polyline, LatLng } from 'react-native-maps';
 import axios from "axios";
 import Constants from "expo-constants";
 
@@ -12,7 +12,8 @@ const routingKey = Constants.manifest?.extra?.ORSMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function MapComponent() {
-  const [itinerary, setItinerary] = useState<any>();
+  const [itinerary, setItinerary] = useState<Itinerary>();
+  const [routePattern, setRoutePattern] = useState<LatLng[]>()
   const markerLocationState = useSelector<RootState, DestinationState>(
     (state) => state.destinationState);
   const inputDestination = useSelector<RootState, DestinationState>(
@@ -27,8 +28,8 @@ export default function MapComponent() {
     try {
       let location = await Location.getCurrentPositionAsync();
       dispatch(setUserLocation({
-        lat: Number(location.coords.latitude),
-        lng: Number(location.coords.longitude),
+        latitude: Number(location.coords.latitude),
+        longitude: Number(location.coords.longitude),
       }));
     } catch (error) {
       console.log(error, "Error during user location. Geolocalisation status: ", status)
@@ -36,16 +37,16 @@ export default function MapComponent() {
   }
 
   // Gets the direction to the destination avoiding noisy roads.
-  const getItinerary: any = async () => {
+  const getItinerary = async () => {
     try {
       const direction = await axios({
         method: "GET",
         url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
-            ${userLocationState.location.lng},${userLocationState.location.lat}
-            &end=${inputDestination.location?.lng},${inputDestination.location?.lat}`
+            ${userLocationState.location.longitude},${userLocationState.location.latitude}
+            &end=${inputDestination.location?.longitude},${inputDestination.location?.latitude}`
       });
 
-      const itinerary: any = {
+      const itinerary: Itinerary = {
         type: direction.data.type,
         features: [{
           type: direction.data.features[0].type,
@@ -53,22 +54,41 @@ export default function MapComponent() {
           geometry: direction.data.features[0].geometry,
         }]
       }
+
       setItinerary(itinerary)
-      console.log(itinerary, "🛠")
     } catch (error) {
       console.log(error, "Error when drawing the itinerary.")
     }
   }
 
-  // FOR TEST PURPOSES.
+  // Builds an array of object {latitude: number, longitude: number} to draw the route.
+  const drawRoute = (pathsRepertory: number[][] | undefined) => {
+    let pathPattern: LatLng[] = [];
+    
+    if (pathsRepertory) {
+      pathsRepertory.map((paths) => {
+        pathPattern.push({
+          latitude: paths[1],
+          longitude: paths[0]
+        })
+      })
+    }
+
+    setRoutePattern(pathPattern);
+  }
+
   React.useEffect(() => {
-    getItinerary()
+    getItinerary();
     console.log(routingKey, userLocationState.location, inputDestination.location)
   }, [inputDestination])
 
   React.useEffect(() => {
     getUserLocation();
   }, []);
+
+  React.useEffect(() => {
+    drawRoute(itinerary?.features[0].geometry?.coordinates);
+  }, [itinerary]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,8 +99,8 @@ export default function MapComponent() {
         style={styles.map}
         camera={{
           center: {
-            latitude: markerLocationState.location?.lat,
-            longitude: markerLocationState.location?.lng
+            latitude: markerLocationState.location?.latitude,
+            longitude: markerLocationState.location?.longitude
           },
           heading: 0,
           pitch: 0,
@@ -99,16 +119,23 @@ export default function MapComponent() {
         />
         <Polyline
           strokeWidth={5}
-          geodesic={true}
-          coordinates={[{latitude: 35.7358426, longitude: 139.7084043}]}
+          coordinates={routePattern}
           strokeColor="rgba(0,0,200,0.5)"
+          strokeColors={[
+            '#7F0000',
+            '#00000000',
+            '#B24112',
+            '#E5845C',
+            '#238C23',
+            '#7F0000'
+          ]}
           lineDashPattern={[35.7358426, 139.7084043]}
-                    />
+        />
         <Marker
           key={markerLocationState.nameEn}
           coordinate={{
-            latitude: markerLocationState.location?.lat,
-            longitude: markerLocationState.location?.lng
+            latitude: markerLocationState.location?.latitude,
+            longitude: markerLocationState.location?.longitude
           }} />
       </MapView>
     </SafeAreaView>
