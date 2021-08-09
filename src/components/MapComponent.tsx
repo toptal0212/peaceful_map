@@ -12,8 +12,11 @@ const routingKey = Constants.manifest?.extra?.ORSMTOKEN;
 const _screen = Dimensions.get("screen");
 
 export default function MapComponent() {
+
+  // TODO: Local states to implement in Redux. 
   const [itinerary, setItinerary] = useState<Itinerary>();
   const [routePattern, setRoutePattern] = useState<LatLng[]>()
+
   const markerLocationState = useSelector<RootState, DestinationState>(
     (state) => state.destinationState);
   const inputDestination = useSelector<RootState, DestinationState>(
@@ -105,8 +108,8 @@ export default function MapComponent() {
         style={styles.map}
         camera={{
           center: {
-            latitude: markerLocationState.location?.latitude,
-            longitude: markerLocationState.location?.longitude
+            latitude: userLocationState.location.latitude,
+            longitude: userLocationState.location.longitude
           },
           heading: 0,
           pitch: 0,
