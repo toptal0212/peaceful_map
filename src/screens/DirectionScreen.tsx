@@ -15,18 +15,23 @@ export default function DirectionScreen() {
     const dispatch = useDispatch();
 
     // Fetches the destination when input in the appropriate field.
-    const fetchDestination = async (input: string | undefined) => {
+    async function fetchDestination(input: string | undefined): Promise<void> {
         // Call to nominatim API to get the address accordind to input.
-        const destination = await axios({
-            method: "GET",
-            url: `https://nominatim.openstreetmap.org/search.php?city=${input?.toLowerCase()}
-            &country=Japan&format=jsonv2`,
-        });
+        try {
+            const destination = await axios({
+                method: "GET",
+                url: `https://nominatim.openstreetmap.org/search.php?city=${input?.toLowerCase()}
+                &country=Japan&format=jsonv2`,
+            });
 
-        dispatch(setDestinationLocation({
-            latitude: Number(destination.data[0].lat),
-            longitude: Number(destination.data[0].lon)
-        }, input?.toLocaleLowerCase()));
+            dispatch(setDestinationLocation({
+                latitude: Number(destination.data[0].lat),
+                longitude: Number(destination.data[0].lon)
+            }, input?.toLocaleLowerCase()));
+        } catch (error) {
+            console.error(error, "Couldn't fetch the destination.")
+        }
+
     }
 
     return (

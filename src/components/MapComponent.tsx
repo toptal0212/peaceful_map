@@ -23,48 +23,54 @@ export default function MapComponent() {
   const dispatch = useDispatch();
 
   // Uses expo-location to get user's current location and update it.
-  const getUserLocation = async () => {
+  async function getUserLocation(): Promise<void> {
     let { status } = await Location.requestForegroundPermissionsAsync();
     try {
       let location = await Location.getCurrentPositionAsync();
+
       dispatch(setUserLocation({
         latitude: Number(location.coords.latitude),
         longitude: Number(location.coords.longitude),
       }));
     } catch (error) {
-      console.log(error, "Error during user location. Geolocalisation status: ", status)
+      console.error(error, "Error during user location. Geolocalisation status: ", status)
     }
   }
 
   // Gets the direction to the destination avoiding noisy roads.
-  const getItinerary = async () => {
+  async function getItinerary(): Promise<void> {
     try {
-      const direction = await axios({
-        method: "GET",
-        url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
-            ${userLocationState.location.longitude},${userLocationState.location.latitude}
-            &end=${inputDestination.location?.longitude},${inputDestination.location?.latitude}`
-      });
+      if (inputDestination.location?.latitude !== 0 
+        && inputDestination.location?.longitude !== 0) {
 
-      const itinerary: Itinerary = {
-        type: direction.data.type,
-        features: [{
-          type: direction.data.features[0].type,
-          properties: direction.data.features[0].properties,
-          geometry: direction.data.features[0].geometry,
-        }]
+        const direction = await axios({
+          method: "GET",
+          url: `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${routingKey}&start=
+              ${userLocationState.location.longitude},${userLocationState.location.latitude}
+              &end=${inputDestination.location?.longitude},${inputDestination.location?.latitude}`
+        });
+
+        const itinerary: Itinerary = {
+          type: direction.data.type,
+          features: [{
+            type: direction.data.features[0].type,
+            properties: direction.data.features[0].properties,
+            geometry: direction.data.features[0].geometry,
+          }]
+        }
+
+        setItinerary(itinerary)
       }
 
-      setItinerary(itinerary)
     } catch (error) {
-      console.log(error, "Error when drawing the itinerary.")
+      console.error(error, "Error when drawing the itinerary.")
     }
   }
 
   // Builds an array of object {latitude: number, longitude: number} to draw the route.
-  const drawRoute = (pathsRepertory: number[][] | undefined) => {
+  function drawRoute(pathsRepertory: number[][] | undefined): void {
     let pathPattern: LatLng[] = [];
-    
+
     if (pathsRepertory) {
       pathsRepertory.map((paths) => {
         pathPattern.push({
