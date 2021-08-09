@@ -16,5 +16,5 @@ I also have a keen interest in learning more about pathfinding algorithms especi
 
 ## Screenshot (current state of the application)
 
-![Simulator Screen Shot - iPhone 12 Pro - 2021-08-09 at 22 58 18](https://user-images.githubusercontent.com/66731438/128719476-c430bb0d-bddc-42fd-a6a4-e28041923d27.png)
-![Simulator Screen Shot - iPhone 12 Pro - 2021-08-09 at 23 00 07](https://user-images.githubusercontent.com/66731438/128719493-bcbaecb8-cee3-4548-8567-712b8a51e969.png)
+<img width="300" alt="start screen routing application" src="./assets/startscreen.png" alt="Start screen" />
+<img width="300" alt ="direction screen routing application" src="./assets/directionscreen.png" alt="Direction screen" />
