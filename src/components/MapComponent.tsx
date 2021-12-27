@@ -83,7 +83,7 @@ export default function MapComponent() {
       })
     }
 
-    setRoutePattern(pathPattern);
+    setRoutePattern(pathPattern); 
   }
 
   React.useEffect(() => {
